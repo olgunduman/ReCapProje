@@ -4,6 +4,7 @@ using System.Text;
 using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 
 namespace Business.Concrete
 {
@@ -33,6 +34,11 @@ namespace Business.Concrete
             return _carDal.GetAll(c => c.ColorId == id);
         }
 
+        public List<CarDetailsDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetail();
+        }
+
         public void Add(Car car)
         {
             if (car.DailyPrice > 0 && car.Description.Length>2)
@@ -45,6 +51,18 @@ namespace Business.Concrete
             {
                 Console.WriteLine("Araç günlük fiyatı 0 dan büyük ve araç ismi 2 karakterden fazla olmalıdır.");
             }
+        }
+
+        public void Update(Car car)
+        {
+            _carDal.Update(car);
+            Console.WriteLine("Araç Güncellendi");
+        }
+
+        public void Delete(Car car)
+        {
+            _carDal.Delete(car);
+            Console.WriteLine("Araç Sistemden Silindi");
         }
 
         public List<Car> GetByDailyPrice(decimal min, decimal max)
