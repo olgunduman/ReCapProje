@@ -1,5 +1,6 @@
 ﻿using System;
 using Business.Concrete;
+using Business.Constants;
 using DataAccess.Concrete.EntityFramework;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
@@ -12,16 +13,50 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             //Brandtest();
-            CarJoinTest();
+            //CarJoinTest();
+            //CarTest();
+           // UserTest();
+           // CustomerTest();
+          RentalTest();
+        }
+
+        private static void RentalTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+          
+            foreach (var rental in rentalManager.GetRentalDetails().Data)
+            {
+                Console.WriteLine(rental.RentId+rental.CarName + rental.UserName + rental.UserName +rental.RentDate);
+            }
+        }
+
+        private static void CustomerTest()
+        {
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+
+            foreach (var customer in customerManager.GetAll().Data)
+            {
+                Console.WriteLine(customer.CompanyName);
+            }
+        }
+
+        private static void UserTest()
+        {
+            UserManager userManager = new UserManager(new EfUserDal());
+            foreach (var user in userManager.GetAll().Data)
+            {
+                Console.WriteLine(user.FirstName  + user.LastName);
+            }
         }
 
         private static void CarJoinTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
 
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
-                Console.WriteLine(car.CarName + car.DailyPrice);
+               Console.WriteLine(car.CarId + car.CarName + car.DailyPrice);
+               
             }
         }
 
@@ -39,8 +74,10 @@ namespace ConsoleUI
         private static void CarTest()
         {
             CarManager carManager = new CarManager(new EfCarDal());
+          
+            
          
-            foreach (var car in carManager.GetAll())
+            foreach (var car in carManager.GetAll().Data)
             {
                 Console.WriteLine(car.Description);
             }
