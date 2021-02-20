@@ -22,10 +22,10 @@ namespace Business.Concrete
         public IDataResult<List<Car>> GetAll()
         {
             //burada iş kodları yazılır
-            if (DateTime.Now.Hour==22)
-            {
-                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
-            }
+            //if (DateTime.Now.Hour==22)
+            //{
+            //    return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            //}
 
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.ProductsListed);
         }
@@ -50,15 +50,14 @@ namespace Business.Concrete
             if (car.DailyPrice > 0 && car.Description.Length>2)
             {
                 _carDal.Add(car);
-                Console.WriteLine("Araç sisteme kayıt edilmiştir.");
-                return new ErrorResult(Messages.ProductNameInvalid);
+                return new SuccessResult(Messages.ProductedAdded);
             }
             else
             {
                 Console.WriteLine("Araç günlük fiyatı 0 dan büyük ve araç ismi 2 karakterden fazla olmalıdır.");
             }
 
-            return new SuccessResult(Messages.ProductedAdded);
+            return new ErrorResult(Messages.ProductNameInvalid);
         }
 
         public IResult Update(Car car)

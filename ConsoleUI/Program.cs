@@ -23,7 +23,14 @@ namespace ConsoleUI
         private static void RentalTest()
         {
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
-          
+           
+            rentalManager.Update(new Rental
+            {
+                Id = 4,
+                CarId = 2,
+                CustomerId = 1,
+                RentDate = new DateTime(2021,01,01)
+            });
             foreach (var rental in rentalManager.GetRentalDetails().Data)
             {
                 Console.WriteLine(rental.RentId+rental.CarName + rental.UserName + rental.UserName +rental.RentDate);

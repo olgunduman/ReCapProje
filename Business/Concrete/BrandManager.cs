@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
+using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 
@@ -16,41 +17,32 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
 
-        public List<Brand> GetAll()
+        public IResult Add(Brand brand)
         {
-            return _brandDal.GetAll();
+            _brandDal.Add(brand);
+            return new SuccessResult("Brand Eklendi");
         }
 
-        public Brand GetById(int brandId)
-        {
-            return _brandDal.Get(b => b.BrandId == brandId);
-        }
-
-        public void Add(Brand brand)
-        {
-            if (brand.BrandName.Length>2)
-            {
-                _brandDal.Add(brand);
-                Console.WriteLine(brand.BrandName + "Model Sisteme eklendi.");
-            }
-            else
-            {
-                Console.WriteLine("BrandName en az 3 karakterden olusmalıdır");
-            }
-        }
-
-        public void Update(Brand brand)
-        {
-            _brandDal.Update(brand);
-            Console.WriteLine(brand.BrandName +  "Model güncellendi");
-        }
-        
-
-
-        public void Delete(Brand brand)
+        public IResult Delete(Brand brand)
         {
             _brandDal.Delete(brand);
-            Console.WriteLine(brand.BrandName + "Model Silindi ");
+            return new SuccessResult("Brand silindi");
+        }
+
+        public IDataResult<List<Brand>> GetAll()
+        {
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
+        }
+
+        public IDataResult<Brand> GetById(int brandId)
+        {
+            return new SuccessDataResult<Brand>(_brandDal.Get(b => b.BrandId == brandId));
+        }
+
+        public IResult Update(Brand brand)
+        {
+            _brandDal.Update(brand);
+            return new SuccessResult("Brand güncellendi");
         }
     }
 }

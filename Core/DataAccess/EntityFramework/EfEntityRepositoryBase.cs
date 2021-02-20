@@ -42,7 +42,7 @@ namespace Core.DataAccess.EntityFramework
             {
                 var addedEntity = context.Entry(entity);//referansı yakala
                 addedEntity.State = EntityState.Added; // eklenecek nesne
-                context.SaveChanges();// ekle kaydet anlamında
+                context.SaveChanges();
             }
 
         }
