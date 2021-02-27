@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -22,7 +24,7 @@ namespace Business.Concrete
        {
            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll(),"Kiralama Listesi");
        }
-
+       [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Rental rental)
         {
             _rentalDal.Add(rental);

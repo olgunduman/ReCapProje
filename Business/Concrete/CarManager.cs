@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Result;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
+
 
 namespace Business.Concrete
 {
-   public class CarManager:ICarService
+    public class CarManager : ICarService
 
-    { ICarDal _carDal;
+    {
+        ICarDal _carDal;
 
         public CarManager(ICarDal carDal)
         {
@@ -27,7 +34,7 @@ namespace Business.Concrete
             //    return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             //}
 
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.ProductsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.ProductsListed);
         }
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
@@ -45,25 +52,19 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailsDto>>(_carDal.GetCarDetail());
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.DailyPrice > 0 && car.Description.Length>2)
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.ProductedAdded);
-            }
-            else
-            {
-                Console.WriteLine("Araç günlük fiyatı 0 dan büyük ve araç ismi 2 karakterden fazla olmalıdır.");
-            }
+            //business codes
 
-            return new ErrorResult(Messages.ProductNameInvalid);
+            _carDal.Add(car);
+            return new SuccessResult(Messages.ProductedAdded);
         }
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-           
+
             return new SuccessResult(Messages.CarUptated);
         }
 
